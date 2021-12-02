@@ -1,0 +1,2 @@
+D:\Capstone Project\Raycast\obj\Debug\Assembly-CSharp-Editor.csprojAssemblyReference.cache
+D:\Capstone Project\Raycast\obj\Debug\Assembly-CSharp-Editor.csproj.CoreCompileInputs.cache
