@@ -5,7 +5,6 @@
 
 #endregion
 
-
 using UnityEngine;
 using Assets.Scenes;
 using System.Threading.Tasks;
@@ -111,7 +110,6 @@ public class SkeletonTracker : MonoBehaviour
         GUILayout.Label(message);
     }
 
-
     // Device Control Command
     void DeviceControl(bool isTurnOn)
     {
@@ -139,6 +137,5 @@ public class SkeletonTracker : MonoBehaviour
         };
         var status = await device.GetStatus();
         await device.SetStatus(!status.Powered); // toggle power
-
     }
 }
