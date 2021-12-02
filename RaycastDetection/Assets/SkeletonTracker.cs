@@ -88,9 +88,7 @@ public class SkeletonTracker : MonoBehaviour
                 deviceStatusON = !deviceStatusON;
                 DeviceControl(deviceStatusON);
             }
-
             message += " Ray Vector:" + Foward.ToString() + " " + detectMessage;
-            print(message);
         }
         else
         {
