@@ -26,10 +26,10 @@ namespace TuyaDeviceScanner
         static async Task TurnON()
         {
             var device = new TuyaPlug()
-            {
-                IP = "192.168.31.88", // Please get IP from the scanner
-                LocalKey = "68b3c9e37b8c2cfc", // Following instructions to get localkey of your device, require tuya IoT platform account
-                Id = "xxxxxxxxxxxxxxxxxxx" // Please get deviceId from the scanner
+            { 
+                IP = "YOUR_TUYA_DEVICE_IP", // Please get IP from the scanner
+                LocalKey = "YOUR_TUYA_LOCAL_KEY", // Following instructions to get localkey of your device, require tuya IoT platform account
+                Id = "YOUR_TUYA_DEVICE_ID" // Please get deviceId from the scanner
             };
             var status = await device.GetStatus();
             await device.SetStatus(!status.Powered); // toggle power
