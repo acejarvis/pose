@@ -1,7 +1,7 @@
 # Home Vision
 A skeleton tracking based smart home system (Capstone Project)
 
-<img src="./doc/flow.svg">
+<img src="./doc/flow.drawio.svg">
 <center>System Architecture</center>
 </br>
 </br>
