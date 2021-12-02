@@ -131,9 +131,9 @@ public class SkeletonTracker : MonoBehaviour
     {
         var device = new TuyaPlug()
         {
-            IP = "192.168.31.88",
-            LocalKey = "68b3c9e37b8c2cfc",
-            Id = "137107483c71bf2296d3"
+            IP = "YOUR_TUYA_DEVICE_IP",
+            LocalKey = "YOUR_TUYA_LOCAL_KEY",
+            Id = "YOUR_TUYA_DEVICE_ID"
         };
         var status = await device.GetStatus();
         await device.SetStatus(!status.Powered); // toggle power

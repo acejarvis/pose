@@ -10,7 +10,7 @@
 1. Download Unity [from the official website](https://unity3d.com/get-unity/download) and install 2020.3 LTS Version. Remember to add Windows/Linux/Mac Build Support Modules during the installation (Depends on your system)
 
 ## Run the Project:
-1. Add the project folder: `RaycastDetection` to your Unity Hub as follows:
+1. Add the project folder: [RaycastDetection](../RaycastDetection) to your Unity Hub as follows:
   ![image](../doc/capture_1.png)
 1. Open the `RaycastDetection` project in Unity Hub.
 1. Click on `Play` button.
@@ -40,7 +40,7 @@ Vola! You can now see the real-time raycast detection and control the IoT device
     1. Add a new Tuya device in the `VirtualScene` as follows:
     ![image](../doc/capture_2.png)
        You can drag and drop the new Sphere Object in the `VirtualScene` to the desired position.
-    1. Add a new code snippet in the `SkeletonTracker.cs` file as follows:
+    1. Add a new code snippet in the [SkeletonTracker.cs](./Assets/SkeletonTracker.cs) file as follows:
         ```C#
         // Line 65
         RaycastHit hit;
