@@ -59,4 +59,7 @@ sysinfo.txt
 crashlytics-build.properties
 
 /Raycast/Temp/
-/Raycast/Packages/
+/Raycast/Library/
+/Raycast/Logs/
+/Raycast/obj/
+/Raycast/Build/
