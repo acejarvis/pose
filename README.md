@@ -5,6 +5,7 @@ A skeleton tracking based smart home system (Capstone Project)
 <center>System Architecture</center>
 </br>
 </br>
+Currently only support Tuya IoT Devices
 
 ## Run the demo
 * Following the [instruction](RaycastDetection/README.md) to run the Unity Project 
