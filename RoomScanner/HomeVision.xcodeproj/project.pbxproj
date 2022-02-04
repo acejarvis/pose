@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA3EAC8B27ACBA9500768B70 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3EAC8A27ACBA9500768B70 /* ViewModel.swift */; };
 		AA76355727963F4D00F68C68 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA76355627963F4D00F68C68 /* ScanViewController.swift */; };
 		AA977FA3279A013400FAF595 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA977FA2279A013400FAF595 /* Extensions.swift */; };
 		AAAEB8BE278FAF7500231EA0 /* HomeVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAEB8BD278FAF7500231EA0 /* HomeVisionApp.swift */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		AA38501B27921C9100F88147 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AA3EAC8A27ACBA9500768B70 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		AA76355627963F4D00F68C68 /* ScanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
 		AA977FA2279A013400FAF595 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		AAAEB8BA278FAF7500231EA0 /* HomeVision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -147,6 +149,7 @@
 				AAAEB8ED278FBDF600231EA0 /* ScanScreen.swift */,
 				AA76355627963F4D00F68C68 /* ScanViewController.swift */,
 				AA977FA2279A013400FAF595 /* Extensions.swift */,
+				AA3EAC8A27ACBA9500768B70 /* ViewModel.swift */,
 			);
 			path = Screen;
 			sourceTree = "<group>";
@@ -287,6 +290,7 @@
 				AAAEB8BE278FAF7500231EA0 /* HomeVisionApp.swift in Sources */,
 				AAAEB8EB278FAFE900231EA0 /* HomeScreen.swift in Sources */,
 				AA977FA3279A013400FAF595 /* Extensions.swift in Sources */,
+				AA3EAC8B27ACBA9500768B70 /* ViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

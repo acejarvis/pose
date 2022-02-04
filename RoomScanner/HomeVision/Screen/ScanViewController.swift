@@ -8,12 +8,15 @@
 import RealityKit
 import ARKit
 
-class ViewController: ARView, ARSessionDelegate {
+class MyARView: ARView, ARSessionDelegate {
     
     var modelsForClassification: [ARMeshClassification: ModelEntity] = [:]
+    var viewModel: MyViewModel!
     
-    required init(frame: CGRect) {
+    init(frame: CGRect, viewModel: MyViewModel) {
         super.init(frame: frame)
+        
+        self.viewModel = viewModel
         
         self.environment.sceneUnderstanding.options = []
         
@@ -45,6 +48,11 @@ class ViewController: ARView, ARSessionDelegate {
     required init?(coder decoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    required init(frame frameRect: CGRect) {
+        fatalError("init(frame:) has not been implemented")
+    }
+    
     
     private var dot_anchor:[AnchorEntity] = []
     
@@ -92,6 +100,17 @@ class ViewController: ARView, ARSessionDelegate {
 //                }
 //            }
         }
+    }
+    
+    func clearAnchorObjects(){        
+        if(!dot_anchor.isEmpty){
+            for obj in dot_anchor{
+                self.scene.removeAnchor(obj)
+            }
+            
+            dot_anchor.removeAll()
+        }
+        viewModel.ClearAnchorObjects = false
     }
     
     func nearbyFaceWithClassification(to location: SIMD3<Float>, completionBlock: @escaping (SIMD3<Float>?, ARMeshClassification) -> Void) {
