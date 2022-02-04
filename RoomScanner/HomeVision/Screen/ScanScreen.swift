@@ -15,16 +15,43 @@ struct ScanScreen: View {
             ARViewContainer()
                 .edgesIgnoringSafeArea(.all)
             
-            ControlBar()
+            bottomControlBar()
+            
         }
         .edgesIgnoringSafeArea(.all)
     }
 }
 
-struct ControlBar: View {
+struct bottomControlBar: View {
     var body: some View {
-        HStack{
-            Button(action: {print("button pressed")}){Text("Export")}
+        HStack(alignment: .bottom){
+            Spacer()
+            
+            Button(action: {print("Reset button pressed")}){
+                Text("Reset")
+                    .frame(maxWidth: 60)
+                    .font(.system(size: 15))
+                    .padding()
+                    .foregroundColor(.white)
+                
+            }
+            .background(Color.blue)
+            .cornerRadius(15)
+            
+            Spacer()
+            
+            Button(action: {print("Done button pressed")}){
+                Text("Done")
+                    .frame(maxWidth: 60)
+                    .font(.system(size: 15))
+                    .padding()
+                    .foregroundColor(.white)
+                
+            }
+            .background(Color.blue)
+            .cornerRadius(15)
+            
+            Spacer()
         }
         .frame(maxWidth: .infinity)
         .padding()
@@ -48,5 +75,7 @@ struct ARViewContainer: UIViewRepresentable {
 struct ScanScreen_Previews: PreviewProvider {
     static var previews: some View {
         ScanScreen()
+            .previewInterfaceOrientation(.landscapeRight)
+            .previewDevice("iPad Pro (11-inch) (3rd generation)")
     }
 }

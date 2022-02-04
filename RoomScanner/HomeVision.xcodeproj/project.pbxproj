@@ -107,8 +107,6 @@
 			children = (
 				AA38501B27921C9100F88147 /* Info.plist */,
 				AAAEB8E7278FAFAC00231EA0 /* Screen */,
-				AAAEB8BD278FAF7500231EA0 /* HomeVisionApp.swift */,
-				AAAEB8BF278FAF7500231EA0 /* ContentView.swift */,
 				AAAEB8C1278FAF7A00231EA0 /* Assets.xcassets */,
 				AAAEB8C3278FAF7A00231EA0 /* Preview Content */,
 			);
@@ -143,6 +141,8 @@
 		AAAEB8E7278FAFAC00231EA0 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				AAAEB8BF278FAF7500231EA0 /* ContentView.swift */,
+				AAAEB8BD278FAF7500231EA0 /* HomeVisionApp.swift */,
 				AAAEB8EA278FAFE900231EA0 /* HomeScreen.swift */,
 				AAAEB8ED278FBDF600231EA0 /* ScanScreen.swift */,
 				AA76355627963F4D00F68C68 /* ScanViewController.swift */,

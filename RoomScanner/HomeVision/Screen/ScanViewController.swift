@@ -46,6 +46,8 @@ class ViewController: ARView, ARSessionDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private var dot_anchor:[AnchorEntity] = []
+    
     @objc
     func handleTap(_ sender: UITapGestureRecognizer) {
         print("tapped")
@@ -57,42 +59,38 @@ class ViewController: ARView, ARSessionDelegate {
             // 2. Visualize the intersection point of the ray with the real-world surface.
             let resultAnchor = AnchorEntity(world: result.worldTransform)
             resultAnchor.addChild(sphere(radius: 0.01, color: .lightGray))
-            self.scene.addAnchor(resultAnchor, removeAfter: 3)
+            self.scene.addAnchor(resultAnchor)
+            dot_anchor.append(resultAnchor)
+            
+            print(result.worldTransform.position)//ray hit location
 
+            
             // 3. Try to get a classification near the tap location.
             //    Classifications are available per face (in the geometric sense, not human faces).
-            nearbyFaceWithClassification(to: result.worldTransform.position) { (centerOfFace, classification) in
-                // ...
-                DispatchQueue.main.async {
-                    // 4. Compute a position for the text which is near the result location, but offset 10 cm
-                    // towards the camera (along the ray) to minimize unintentional occlusions of the text by the mesh.
-                    let rayDirection = normalize(result.worldTransform.position - self.cameraTransform.translation)
-                    let textPositionInWorldCoordinates = result.worldTransform.position - (rayDirection * 0.1)
-                    
-                    // 5. Create a 3D text to visualize the classification result.
-                    let textEntity = self.model(for: classification)
-
-                    // 6. Scale the text depending on the distance, such that it always appears with
-                    //    the same size on screen.
-                    let raycastDistance = distance(result.worldTransform.position, self.cameraTransform.translation)
-                    textEntity.scale = .one * raycastDistance
-
-                    // 7. Place the text, facing the camera.
-                    var resultWithCameraOrientation = self.cameraTransform
-                    resultWithCameraOrientation.translation = textPositionInWorldCoordinates
-                    let textAnchor = AnchorEntity(world: resultWithCameraOrientation.matrix)
-                    textAnchor.addChild(textEntity)
-                    self.scene.addAnchor(textAnchor, removeAfter: 3)
-
-                    // 8. Visualize the center of the face (if any was found) for three seconds.
-                    //    It is possible that this is nil, e.g. if there was no face close enough to the tap location.
-                    if let centerOfFace = centerOfFace {
-                        let faceAnchor = AnchorEntity(world: centerOfFace)
-                        faceAnchor.addChild(self.sphere(radius: 0.01, color: classification.color))
-                        self.scene.addAnchor(faceAnchor, removeAfter: 3)
-                    }
-                }
-            }
+//            nearbyFaceWithClassification(to: result.worldTransform.position) { (centerOfFace, classification) in
+//                // ...
+//                DispatchQueue.main.async {
+//                    // 4. Compute a position for the text which is near the result location, but offset 10 cm
+//                    // towards the camera (along the ray) to minimize unintentional occlusions of the text by the mesh.
+//                    let rayDirection = normalize(result.worldTransform.position - self.cameraTransform.translation)
+//                    let textPositionInWorldCoordinates = result.worldTransform.position - (rayDirection * 0.1)
+//
+//                    // 5. Create a 3D text to visualize the classification result.
+//                    let textEntity = self.model(for: classification)
+//
+//                    // 6. Scale the text depending on the distance, such that it always appears with
+//                    //    the same size on screen.
+//                    let raycastDistance = distance(result.worldTransform.position, self.cameraTransform.translation)
+//                    textEntity.scale = .one * raycastDistance
+//
+//                    // 7. Place the text, facing the camera.
+//                    var resultWithCameraOrientation = self.cameraTransform
+//                    resultWithCameraOrientation.translation = textPositionInWorldCoordinates
+//                    let textAnchor = AnchorEntity(world: resultWithCameraOrientation.matrix)
+//                    textAnchor.addChild(textEntity)
+//                    self.scene.addAnchor(textAnchor)
+//                }
+//            }
         }
     }
     
