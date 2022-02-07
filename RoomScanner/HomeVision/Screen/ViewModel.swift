@@ -10,3 +10,15 @@ import Foundation
 public class MyViewModel: ObservableObject {
     @Published public var ClearAnchorObjects: Bool = false
 }
+
+struct PlacingObjectModel {
+    enum ObjType: String, CaseIterable, Identifiable {
+        case camera
+        case light
+        case speaker
+        
+        var id: String {self.rawValue}
+    }
+    
+    var objType: ObjType = .camera
+}

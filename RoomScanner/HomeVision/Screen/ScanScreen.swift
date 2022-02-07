@@ -11,10 +11,11 @@ import ARKit
 
 struct ScanScreen: View {
     @StateObject var viewModel = MyViewModel()
+    @State private var objModel = PlacingObjectModel()
     
     var body: some View {
         ZStack(alignment: .bottom){
-            ARViewContainer(viewModel: viewModel)
+            ARViewContainer(viewModel: viewModel, objModel: $objModel)
                 .edgesIgnoringSafeArea(.all)
             
             HStack(alignment: .bottom){
@@ -36,13 +37,27 @@ struct ScanScreen: View {
                 
                 Spacer()
                 
+                Menu(content: {
+                    Picker("", selection: $objModel.objType) {
+                        Text(PlacingObjectModel.ObjType.camera.rawValue).tag(PlacingObjectModel.ObjType.camera)
+                            .foregroundColor(.white)
+                        Text(PlacingObjectModel.ObjType.light.rawValue).tag(PlacingObjectModel.ObjType.light)
+                            .foregroundColor(.white)
+                        Text(PlacingObjectModel.ObjType.speaker.rawValue).tag(PlacingObjectModel.ObjType.speaker)
+                            .foregroundColor(.white)
+                    }
+                    .padding()
+                },
+                 label: { Label ("", systemImage: "plus.circle").font(.system(size: 40)) })
+                
+                Spacer()
+                
                 Button(action: {print("Done button pressed")}){
                     Text("Done")
                         .frame(maxWidth: 60)
                         .font(.system(size: 15))
                         .padding()
                         .foregroundColor(.white)
-                    
                 }
                 .background(Color.blue)
                 .cornerRadius(15)
@@ -61,6 +76,7 @@ struct ScanScreen: View {
 
 struct ARViewContainer: UIViewRepresentable {
     @ObservedObject var viewModel: MyViewModel
+    @Binding var objModel:PlacingObjectModel
     
     func makeUIView(context: Context) -> MyARView {
         let arView = MyARView(frame: .zero, viewModel: viewModel)
@@ -72,6 +88,8 @@ struct ARViewContainer: UIViewRepresentable {
         if(viewModel.ClearAnchorObjects){
             uiView.clearAnchorObjects()
         }
+        
+        uiView.objModel = objModel
     }
 }
 

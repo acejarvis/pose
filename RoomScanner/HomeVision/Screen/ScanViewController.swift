@@ -12,6 +12,7 @@ class MyARView: ARView, ARSessionDelegate {
     
     var modelsForClassification: [ARMeshClassification: ModelEntity] = [:]
     var viewModel: MyViewModel!
+    var objModel: PlacingObjectModel!
     
     init(frame: CGRect, viewModel: MyViewModel) {
         super.init(frame: frame)
@@ -54,124 +55,75 @@ class MyARView: ARView, ARSessionDelegate {
     }
     
     
-    private var dot_anchor:[AnchorEntity] = []
+    private var dot_anchor_list:[AnchorEntity] = []
+    private var text_anchor_list:[AnchorEntity] = []
     
     @objc
     func handleTap(_ sender: UITapGestureRecognizer) {
         print("tapped")
-        // 1. Perform a ray cast against the mesh.
-        // Note: Ray-cast option ".estimatedPlane" with alignment ".any" also takes the mesh into account.
+        // Perform a ray cast against the mesh.
         let tapLocation = sender.location(in: self)
         if let result = self.raycast(from: tapLocation, allowing: .estimatedPlane, alignment: .any).first {
-            // ...
-            // 2. Visualize the intersection point of the ray with the real-world surface.
-            let resultAnchor = AnchorEntity(world: result.worldTransform)
-            resultAnchor.addChild(sphere(radius: 0.01, color: .lightGray))
-            self.scene.addAnchor(resultAnchor)
-            dot_anchor.append(resultAnchor)
+            // Visualize the intersection point of the ray with the real-world surface.
+            let dotAnchor = AnchorEntity(world: result.worldTransform)
+            dotAnchor.addChild(sphere(radius: 0.02, color: .lightGray))
+            self.scene.addAnchor(dotAnchor)
+            dot_anchor_list.append(dotAnchor)
+            
+            
+            // Create a 3D text to visualize the classification result.
+            let rayDirection = normalize(result.worldTransform.position - self.cameraTransform.translation)
+            let textPositionInWorldCoordinates = result.worldTransform.position - (rayDirection * 0.1)
+            // Create a 3D text to visualize the classification result.
+            let textEntity = self.textModel(text: objModel.objType.rawValue)
+
+            // Scale the text depending on the distance, such that it always appears with the same size on screen.
+            let raycastDistance = distance(result.worldTransform.position, self.cameraTransform.translation)
+            textEntity.scale = .one * raycastDistance
+
+            // Place the text, facing the camera.
+            var resultWithCameraOrientation = self.cameraTransform
+            resultWithCameraOrientation.translation = textPositionInWorldCoordinates
+            let textAnchor = AnchorEntity(world: resultWithCameraOrientation.matrix)
+            textAnchor.addChild(textEntity)
+            self.scene.addAnchor(textAnchor)
+            text_anchor_list.append(textAnchor)
             
             print(result.worldTransform.position)//ray hit location
 
-            
-            // 3. Try to get a classification near the tap location.
-            //    Classifications are available per face (in the geometric sense, not human faces).
-//            nearbyFaceWithClassification(to: result.worldTransform.position) { (centerOfFace, classification) in
-//                // ...
-//                DispatchQueue.main.async {
-//                    // 4. Compute a position for the text which is near the result location, but offset 10 cm
-//                    // towards the camera (along the ray) to minimize unintentional occlusions of the text by the mesh.
-//                    let rayDirection = normalize(result.worldTransform.position - self.cameraTransform.translation)
-//                    let textPositionInWorldCoordinates = result.worldTransform.position - (rayDirection * 0.1)
-//
-//                    // 5. Create a 3D text to visualize the classification result.
-//                    let textEntity = self.model(for: classification)
-//
-//                    // 6. Scale the text depending on the distance, such that it always appears with
-//                    //    the same size on screen.
-//                    let raycastDistance = distance(result.worldTransform.position, self.cameraTransform.translation)
-//                    textEntity.scale = .one * raycastDistance
-//
-//                    // 7. Place the text, facing the camera.
-//                    var resultWithCameraOrientation = self.cameraTransform
-//                    resultWithCameraOrientation.translation = textPositionInWorldCoordinates
-//                    let textAnchor = AnchorEntity(world: resultWithCameraOrientation.matrix)
-//                    textAnchor.addChild(textEntity)
-//                    self.scene.addAnchor(textAnchor)
-//                }
-//            }
         }
     }
     
     func clearAnchorObjects(){        
-        if(!dot_anchor.isEmpty){
-            for obj in dot_anchor{
+        if(!dot_anchor_list.isEmpty){
+            for obj in dot_anchor_list{
                 self.scene.removeAnchor(obj)
             }
             
-            dot_anchor.removeAll()
+            dot_anchor_list.removeAll()
         }
-        viewModel.ClearAnchorObjects = false
-    }
-    
-    func nearbyFaceWithClassification(to location: SIMD3<Float>, completionBlock: @escaping (SIMD3<Float>?, ARMeshClassification) -> Void) {
-        guard let frame = self.session.currentFrame else {
-            completionBlock(nil, .none)
-            return
-        }
-    
-        var meshAnchors = frame.anchors.compactMap({ $0 as? ARMeshAnchor })
         
-        // Sort the mesh anchors by distance to the given location and filter out
-        // any anchors that are too far away (4 meters is a safe upper limit).
-        let cutoffDistance: Float = 4.0
-        meshAnchors.removeAll { distance($0.transform.position, location) > cutoffDistance }
-        meshAnchors.sort { distance($0.transform.position, location) < distance($1.transform.position, location) }
-
-        // Perform the search asynchronously in order not to stall rendering.
-        DispatchQueue.global().async {
-            for anchor in meshAnchors {
-                for index in 0..<anchor.geometry.faces.count {
-                    // Get the center of the face so that we can compare it to the given location.
-                    let geometricCenterOfFace = anchor.geometry.centerOf(faceWithIndex: index)
-                    
-                    // Convert the face's center to world coordinates.
-                    var centerLocalTransform = matrix_identity_float4x4
-                    centerLocalTransform.columns.3 = SIMD4<Float>(geometricCenterOfFace.0, geometricCenterOfFace.1, geometricCenterOfFace.2, 1)
-                    let centerWorldPosition = (anchor.transform * centerLocalTransform).position
-                     
-                    // We're interested in a classification that is sufficiently close to the given location––within 5 cm.
-                    let distanceToFace = distance(centerWorldPosition, location)
-                    if distanceToFace <= 0.05 {
-                        // Get the semantic classification of the face and finish the search.
-                        let classification: ARMeshClassification = anchor.geometry.classificationOf(faceWithIndex: index)
-                        completionBlock(centerWorldPosition, classification)
-                        return
-                    }
-                }
+        if(!text_anchor_list.isEmpty){
+            for textObj in text_anchor_list{
+                self.scene.removeAnchor(textObj)
             }
             
-            // Let the completion block know that no result was found.
-            completionBlock(nil, .none)
-        }
-    }
-    
-    func model(for classification: ARMeshClassification) -> ModelEntity {
-        // Return cached model if available
-        if let model = modelsForClassification[classification] {
-            model.transform = .identity
-            return model.clone(recursive: true)
+            text_anchor_list.removeAll()
         }
         
-        // Generate 3D text for the classification
+        viewModel.ClearAnchorObjects = false
+    }
+
+    
+    func textModel(text: String) -> ModelEntity {
+        // Generate 3D text for the Object
         let lineHeight: CGFloat = 0.05
         let font = MeshResource.Font.systemFont(ofSize: lineHeight)
-        let textMesh = MeshResource.generateText(classification.description, extrusionDepth: Float(lineHeight * 0.1), font: font)
-        let textMaterial = SimpleMaterial(color: classification.color, isMetallic: true)
+        let textMesh = MeshResource.generateText(text, extrusionDepth: Float(lineHeight * 0.1), font: font)
+        let textMaterial = SimpleMaterial(color: .lightGray, isMetallic: true)
         let model = ModelEntity(mesh: textMesh, materials: [textMaterial])
         // Move text geometry to the left so that its local origin is in the center
         model.position.x -= model.visualBounds(relativeTo: nil).extents.x / 2
-        // Add model to cache
-        modelsForClassification[classification] = model
         return model
     }
     
