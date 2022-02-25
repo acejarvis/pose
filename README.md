@@ -1,4 +1,4 @@
-# Home Vision
+# P.O.S.E (Pointing Oriented Smart Home Environment)
 A skeleton tracking based smart home system (Capstone Project)
 
 <img src="./doc/flow.drawio.svg">
