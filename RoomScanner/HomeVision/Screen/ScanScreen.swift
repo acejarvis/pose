@@ -15,60 +15,74 @@ struct ScanScreen: View {
     
     var body: some View {
         ZStack(alignment: .bottom){
-            ARViewContainer(viewModel: viewModel, objModel: $objModel)
-                .edgesIgnoringSafeArea(.all)
-            
-            HStack(alignment: .bottom){
-                Spacer()
+            VStack{
+                ARViewContainer(viewModel: viewModel, objModel: $objModel)
+                    .edgesIgnoringSafeArea(.all)
                 
-                Button(
-                    action: {
-                        viewModel.ClearAnchorObjects = true
-                    }){
-                    Text("Reset")
-                        .frame(maxWidth: 60)
-                        .font(.system(size: 15))
-                        .padding()
-                        .foregroundColor(.white)
+                HStack(alignment: .bottom){
+                    Spacer()
                     
-                }
-                .background(Color.blue)
-                .cornerRadius(15)
-                
-                Spacer()
-                
-                Menu(content: {
-                    Picker("", selection: $objModel.objType) {
-                        Text(PlacingObjectModel.ObjType.camera.rawValue).tag(PlacingObjectModel.ObjType.camera)
+                    Button(
+                        action: {
+                            viewModel.ClearAnchorObjects = true
+                            viewModel.cameraError.toggle()
+                            print("viewModel.cameraError: "+String(viewModel.cameraError))
+                        }){
+                        Text("Reset")
+                            .frame(maxWidth: 60)
+                            .font(.system(size: 15))
+                            .padding()
                             .foregroundColor(.white)
-                        Text(PlacingObjectModel.ObjType.light.rawValue).tag(PlacingObjectModel.ObjType.light)
-                            .foregroundColor(.white)
-                        Text(PlacingObjectModel.ObjType.speaker.rawValue).tag(PlacingObjectModel.ObjType.speaker)
+                        
+                    }
+                    .background(Color.blue)
+                    .cornerRadius(15)
+                    
+                    Spacer()
+                    
+                    Menu(content: {
+                        Picker("", selection: $objModel.objType) {
+                            Text(PlacingObjectModel.ObjType.camera.rawValue).tag(PlacingObjectModel.ObjType.camera)
+                                .foregroundColor(.white)
+                            Text(PlacingObjectModel.ObjType.light.rawValue).tag(PlacingObjectModel.ObjType.light)
+                                .foregroundColor(.white)
+                            Text(PlacingObjectModel.ObjType.speaker.rawValue).tag(PlacingObjectModel.ObjType.speaker)
+                                .foregroundColor(.white)
+                        }
+                        .padding()
+                    },
+                     label: { Label ("", systemImage: "plus.circle").font(.system(size: 40)) })
+                    
+                    Spacer()
+                    
+                    Button(
+                        action: {
+                            viewModel.DonePressed = true
+                        }){
+                        Text("Done")
+                            .frame(maxWidth: 60)
+                            .font(.system(size: 15))
+                            .padding()
                             .foregroundColor(.white)
                     }
-                    .padding()
-                },
-                 label: { Label ("", systemImage: "plus.circle").font(.system(size: 40)) })
-                
-                Spacer()
-                
-                Button(action: {print("Done button pressed")}){
-                    Text("Done")
-                        .frame(maxWidth: 60)
-                        .font(.system(size: 15))
-                        .padding()
-                        .foregroundColor(.white)
+                    .background(Color.blue)
+                    .cornerRadius(15)
+                    
+                    Spacer()
                 }
-                .background(Color.blue)
-                .cornerRadius(15)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .padding(.bottom)
+                .background(Color.black.opacity(0.25))
                 
-                Spacer()
             }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .padding(.bottom)
-            .background(Color.black.opacity(0.25))
-            
+//            .alert(isPresented: $viewModel.cameraError){
+////                print("in alert")
+//                Alert(
+//                    title: Text("Title"),
+//                    message: Text("Message")
+//                )
+//            }
         }
         .edgesIgnoringSafeArea(.all)
     }
@@ -87,6 +101,10 @@ struct ARViewContainer: UIViewRepresentable {
     func updateUIView(_ uiView: MyARView, context: Context) {
         if(viewModel.ClearAnchorObjects){
             uiView.clearAnchorObjects()
+        }
+        
+        if(viewModel.DonePressed){
+            uiView.donePressed()
         }
         
         uiView.objModel = objModel

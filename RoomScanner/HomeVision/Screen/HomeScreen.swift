@@ -22,8 +22,6 @@ struct HomeScreen: View {
                     NavigationLink(destination: ScanScreen(), label: {SetUpView()})
                     
                     Spacer()
-                    
-                    
                 }
             }
         }

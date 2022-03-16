@@ -95,3 +95,59 @@ extension ARMeshGeometry {
     }
 }
 
+func translateTransform(_ x: Float, _ y: Float, _ z: Float) -> float4x4 {
+    var tf = float4x4(diagonal: SIMD4<Float>(repeating: 1))
+    tf.columns.3 = SIMD4<Float>(x: x, y: y, z: z, w: 1)
+    return tf
+}
+
+extension ARPlaneAnchor {
+    
+    // returns all 4 world coordinates of the given plane
+    // (topLeft, topRight, bottomLeft, bottomRight)
+    func worldPoints() -> (SCNVector3, SCNVector3, SCNVector3, SCNVector3) {
+        
+        // Get world's updated center
+        let worldTransform = transform * translateTransform(center.x, 0, center.z)
+        
+        let width = extent.x
+        let height = extent.z
+
+        let topLeft = worldTransform * translateTransform(-width / 2.0, 0, -height / 2.0)
+        let topRight = worldTransform * translateTransform(width / 2.0, 0, -height / 2.0)
+        let bottomLeft = worldTransform * translateTransform(-width / 2.0, 0, height / 2.0)
+        let bottomRight = worldTransform * translateTransform(width / 2.0, 0, height / 2.0)
+
+       
+        let pointTopLeft = SCNVector3(
+            x: topLeft.columns.3.x,
+            y: topLeft.columns.3.y,
+            z: topLeft.columns.3.z
+        )
+        
+        let pointTopRight = SCNVector3(
+            x: topRight.columns.3.x,
+            y: topRight.columns.3.y,
+            z: topRight.columns.3.z
+        )
+        
+        let pointBottomLeft = SCNVector3(
+            x: bottomLeft.columns.3.x,
+            y: bottomLeft.columns.3.y,
+            z: bottomLeft.columns.3.z
+        )
+        
+        let pointBottomRight = SCNVector3(
+            x: bottomRight.columns.3.x,
+            y: bottomRight.columns.3.y,
+            z: bottomRight.columns.3.z
+        )
+        
+        return (
+            pointTopLeft,
+            pointTopRight,
+            pointBottomLeft,
+            pointBottomRight
+        )
+    }
+}

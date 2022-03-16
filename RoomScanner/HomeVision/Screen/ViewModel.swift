@@ -9,6 +9,8 @@ import Foundation
 
 public class MyViewModel: ObservableObject {
     @Published public var ClearAnchorObjects: Bool = false
+    @Published public var DonePressed: Bool = false
+    @Published public var cameraError = false
 }
 
 struct PlacingObjectModel {
@@ -19,6 +21,5 @@ struct PlacingObjectModel {
         
         var id: String {self.rawValue}
     }
-    
     var objType: ObjType = .camera
 }
