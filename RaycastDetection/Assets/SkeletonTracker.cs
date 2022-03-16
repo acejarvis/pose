@@ -73,13 +73,17 @@ public class SkeletonTracker : MonoBehaviour
                     detectMessage = "Hit Ball";
                     deviceRenderer.material.SetColor("_Color", Color.green);
                 }
+                else
+                {
+                    if (deviceStatusON) deviceRenderer.material.SetColor("_Color", Color.yellow);
+                    else deviceRenderer.material.SetColor("_Color", Color.white);
+                }
             }
             else
             {
                 hitCount = 0;
                 detectMessage = "Inactive";
-                if (deviceStatusON) deviceRenderer.material.SetColor("_Color", Color.yellow);
-                else deviceRenderer.material.SetColor("_Color", Color.white);
+                
             }
             // Added hit count to filter out jitter motion
             if (hitCount >= 30)
