@@ -15,75 +15,72 @@ struct ScanScreen: View {
     
     var body: some View {
         ZStack(alignment: .bottom){
-            VStack{
-                ARViewContainer(viewModel: viewModel, objModel: $objModel)
-                    .edgesIgnoringSafeArea(.all)
+            ARViewContainer(viewModel: viewModel, objModel: $objModel)
+                .edgesIgnoringSafeArea(.all)
+            
+            HStack(alignment: .bottom){
+                Spacer()
                 
-                HStack(alignment: .bottom){
-                    Spacer()
-                    
-                    Button(
-                        action: {
-                            viewModel.ClearAnchorObjects = true
-                            viewModel.cameraError.toggle()
-                            print("viewModel.cameraError: "+String(viewModel.cameraError))
-                        }){
-                        Text("Reset")
-                            .frame(maxWidth: 60)
-                            .font(.system(size: 15))
-                            .padding()
-                            .foregroundColor(.white)
-                        
-                    }
-                    .background(Color.blue)
-                    .cornerRadius(15)
-                    
-                    Spacer()
-                    
-                    Menu(content: {
-                        Picker("", selection: $objModel.objType) {
-                            Text(PlacingObjectModel.ObjType.camera.rawValue).tag(PlacingObjectModel.ObjType.camera)
-                                .foregroundColor(.white)
-                            Text(PlacingObjectModel.ObjType.light.rawValue).tag(PlacingObjectModel.ObjType.light)
-                                .foregroundColor(.white)
-                            Text(PlacingObjectModel.ObjType.speaker.rawValue).tag(PlacingObjectModel.ObjType.speaker)
-                                .foregroundColor(.white)
-                        }
+                Button(
+                    action: {
+                        viewModel.ClearAnchorObjects = true
+//                            viewModel.cameraError.toggle()
+//                            print("viewModel.cameraError: "+String(viewModel.cameraError))
+                    }){
+                    Text("Reset")
+                        .frame(maxWidth: 60)
+                        .font(.system(size: 15))
                         .padding()
-                    },
-                     label: { Label ("", systemImage: "plus.circle").font(.system(size: 40)) })
+                        .foregroundColor(.white)
                     
-                    Spacer()
-                    
-                    Button(
-                        action: {
-                            viewModel.DonePressed = true
-                        }){
-                        Text("Done")
-                            .frame(maxWidth: 60)
-                            .font(.system(size: 15))
-                            .padding()
+                }
+                .background(Color.blue)
+                .cornerRadius(15)
+                
+                Spacer()
+                
+                Menu(content: {
+                    Picker("", selection: $objModel.objType) {
+                        Text(PlacingObjectModel.ObjType.camera.rawValue).tag(PlacingObjectModel.ObjType.camera)
+                            .foregroundColor(.white)
+                        Text(PlacingObjectModel.ObjType.light.rawValue).tag(PlacingObjectModel.ObjType.light)
+                            .foregroundColor(.white)
+                        Text(PlacingObjectModel.ObjType.speaker.rawValue).tag(PlacingObjectModel.ObjType.speaker)
                             .foregroundColor(.white)
                     }
-                    .background(Color.blue)
-                    .cornerRadius(15)
-                    
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .padding(.bottom)
-                .background(Color.black.opacity(0.25))
+                    .padding()
+                },
+                 label: { Label ("", systemImage: "plus.circle").font(.system(size: 40)) })
                 
+                Spacer()
+                
+                Button(
+                    action: {
+                        viewModel.DonePressed = true
+                    }){
+                    Text("Done")
+                        .frame(maxWidth: 60)
+                        .font(.system(size: 15))
+                        .padding()
+                        .foregroundColor(.white)
+                }
+                .background(Color.blue)
+                .cornerRadius(15)
+                
+                Spacer()
             }
-//            .alert(isPresented: $viewModel.cameraError){
-////                print("in alert")
-//                Alert(
-//                    title: Text("Title"),
-//                    message: Text("Message")
-//                )
-//            }
+            .frame(maxWidth: .infinity)
+            .padding()
+            .padding(.bottom)
+            .background(Color.black.opacity(0.25))
+            
         }
+        .alert(item: $viewModel.PopError, content: { error in
+            Alert(
+                title: Text(error.title),
+                message: Text(error.description)
+            )
+        })
         .edgesIgnoringSafeArea(.all)
     }
 }

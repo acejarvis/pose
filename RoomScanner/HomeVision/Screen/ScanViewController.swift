@@ -223,17 +223,21 @@ class MyARView: ARView, ARSessionDelegate {
             
             if(!contain_camera){
                 print("Error, No camera selected")
+                viewModel.PopError = ErrorInfo(id: 1, title: "Error", description: "Please select at least one camera")
+                viewModel.DonePressed = false
                 return
+            }else{
+                var data_send = [String: String]()
+                for(index, _) in obj_name_list.enumerated(){
+                    data_send[obj_name_list[index]] = obj_pos_list[index].description.dropFirst(12).description
+                }
+                restApi(data: data_send)
             }
-            
-            //process data
-            var data_send = [String: String]()
-            for(index, _) in obj_name_list.enumerated(){
-                data_send[obj_name_list[index]] = obj_pos_list[index].description.dropFirst(12).description
-            }
-            
-            restApi(data: data_send)
+        }else{
+            viewModel.PopError = ErrorInfo(id: 2, title: "Error", description: "No device is selected")
         }
+        
+        viewModel.DonePressed = false
     }
     
     func restApi(data: Dictionary<String, String>){
@@ -251,17 +255,20 @@ class MyARView: ARView, ARSessionDelegate {
                     let response = response as? HTTPURLResponse,
                     error == nil else {                                              // check for fundamental networking error
                     print("error", error ?? "Unknown error")
+                    self.viewModel.PopError = ErrorInfo(id: 3, title: "Error", description: "Network Error")
                     return
                 }
 
                 guard (200 ... 299) ~= response.statusCode else {                    // check for http errors
                     print("statusCode should be 2xx, but is \(response.statusCode)")
                     print("response = \(response)")
+                    self.viewModel.PopError = ErrorInfo(id: 3, title: "Error", description: "Network Error")
                     return
                 }
 
                 let responseString = String(data: data, encoding: .utf8)
                 print("responseString = \(responseString)")
+                self.viewModel.PopError = ErrorInfo(id: 4, title: "Successful", description: "Data sent successfully to the server")
             }
 
             task.resume()
