@@ -17,10 +17,6 @@ public class MyViewModel: ObservableObject {
     @Published public var ClearAnchorObjects: Bool = false
     @Published public var DonePressed: Bool = false
     @Published public var PopError: ErrorInfo?
-//    @Published public var CameraNotSelectedError: Bool = false
-//    @Published public var ApiSentSuccessful: Bool = false
-//    @Published public var NoObjSelected: Bool = false
-        
 }
 
 struct PlacingObjectModel {
