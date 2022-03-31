@@ -65,6 +65,7 @@ class MyARView: ARView, ARSessionDelegate {
     private var obj_pos_list:[SIMD3<Float>] = []
     private var text_anchor_list:[AnchorEntity] = []
     private var obj_cnt = 0
+    private var plane_cood_list:[PlaneCoord] = []
 
     @objc
     func handleTap(_ sender: UITapGestureRecognizer) {
@@ -97,39 +98,50 @@ class MyARView: ARView, ARSessionDelegate {
             textAnchor.addChild(textEntity)
             self.scene.addAnchor(textAnchor)
             text_anchor_list.append(textAnchor)
+            
+            //using raycat detection to find the closest plane
+            if(objModel.objType.rawValue.description == "camera"){
+                print("camera is selected")
+            }
         }
     }
     
 //    ********************************Plane Detection********************************
     
-//    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
-//        for anchor in anchors {
-//            if anchor is ARPlaneAnchor {
-//                let planeAnchor = anchor as! ARPlaneAnchor
-//                print("added plane")
+    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
+        for anchor in anchors {
+            if anchor is ARPlaneAnchor {
+                let planeAnchor = anchor as! ARPlaneAnchor
+                print("added plane")
 //                addPlaneEntity(with: planeAnchor)
-//            }
-//        }
-//    }
-//
-//    func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
-//        for anchor in anchors {
-//            if anchor is ARPlaneAnchor {
-//                let planeAnchor = anchor as! ARPlaneAnchor
-//                updatePlaneEntity(with: planeAnchor)
-//            }
-//        }
-//    }
-//
-//    func session(_ session: ARSession, didRemove anchors: [ARAnchor]) {
-//        for anchor in anchors {
-//            if anchor is ARPlaneAnchor {
-//                let planeAnchor = anchor as! ARPlaneAnchor
-//                removePlaneEntity(with: planeAnchor)
-//            }
-//        }
-//    }
-//
+                let newPlaneCoord = PlaneCoord()
+                newPlaneCoord.pointTopLeft = SIMD3.init(planeAnchor.worldPoints().0)
+                newPlaneCoord.pointTopRight = SIMD3.init(planeAnchor.worldPoints().1)
+                newPlaneCoord.pointBottomLeft = SIMD3.init(planeAnchor.worldPoints().2)
+                newPlaneCoord.pointBottomRight = SIMD3.init(planeAnchor.worldPoints().3)
+                plane_cood_list.append(newPlaneCoord)
+            }
+        }
+    }
+
+    func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
+        for anchor in anchors {
+            if anchor is ARPlaneAnchor {
+                let planeAnchor = anchor as! ARPlaneAnchor
+                updatePlaneEntity(with: planeAnchor)
+            }
+        }
+    }
+
+    func session(_ session: ARSession, didRemove anchors: [ARAnchor]) {
+        for anchor in anchors {
+            if anchor is ARPlaneAnchor {
+                let planeAnchor = anchor as! ARPlaneAnchor
+                removePlaneEntity(with: planeAnchor)
+            }
+        }
+    }
+
 //    func addPlaneEntity(with anchor: ARPlaneAnchor) {
 //
 //        let planeAnchorEntity = AnchorEntity(.plane([.any],
@@ -145,7 +157,7 @@ class MyARView: ARView, ARSessionDelegate {
 //        self.scene.addAnchor(planeAnchorEntity)
 //
 //    }
-//
+
 //    func createPlaneModelEntity(with anchor: ARPlaneAnchor) -> ModelEntity {
 //        var planeMesh: MeshResource
 //        var color: UIColor
@@ -164,27 +176,27 @@ class MyARView: ARView, ARSessionDelegate {
 //
 //        return ModelEntity(mesh: planeMesh, materials: [SimpleMaterial(color: color, roughness: 0.25, isMetallic: false)])
 //    }
-//
-//    func removePlaneEntity(with anchor: ARPlaneAnchor) {
-//        guard let planeAnchorEntity = self.scene.findEntity(named: anchor.identifier.uuidString+"_anchor") else { return }
-//        self.scene.removeAnchor(planeAnchorEntity as! AnchorEntity)
-//    }
-//
-//    func updatePlaneEntity(with anchor: ARPlaneAnchor) {
-//        var planeMesh: MeshResource
-//        guard let entity = self.scene.findEntity(named: anchor.identifier.uuidString+"_model") else { return }
-//        let modelEntity = entity as! ModelEntity
-//
-//        if anchor.alignment == .horizontal {
-//            planeMesh = .generatePlane(width: anchor.extent.x, depth: anchor.extent.z)
-//        } else if anchor.alignment == .vertical {
-//            planeMesh = .generatePlane(width: anchor.extent.x, height: anchor.extent.z)
-//        } else {
-//            fatalError("Anchor is not ARPlaneAnchor")
-//        }
-//
-//        modelEntity.model!.mesh = planeMesh
-//    }
+
+    func removePlaneEntity(with anchor: ARPlaneAnchor) {
+        guard let planeAnchorEntity = self.scene.findEntity(named: anchor.identifier.uuidString+"_anchor") else { return }
+        self.scene.removeAnchor(planeAnchorEntity as! AnchorEntity)
+    }
+
+    func updatePlaneEntity(with anchor: ARPlaneAnchor) {
+        var planeMesh: MeshResource
+        guard let entity = self.scene.findEntity(named: anchor.identifier.uuidString+"_model") else { return }
+        let modelEntity = entity as! ModelEntity
+
+        if anchor.alignment == .horizontal {
+            planeMesh = .generatePlane(width: anchor.extent.x, depth: anchor.extent.z)
+        } else if anchor.alignment == .vertical {
+            planeMesh = .generatePlane(width: anchor.extent.x, height: anchor.extent.z)
+        } else {
+            fatalError("Anchor is not ARPlaneAnchor")
+        }
+
+        modelEntity.model!.mesh = planeMesh
+    }
     
 //    ************************************************************************************
     

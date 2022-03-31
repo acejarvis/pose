@@ -32,7 +32,7 @@ struct HomeScreen: View {
 struct TagLineView: View {
     var body: some View {
         HStack{
-            Text("WELCOME\nTO\nPOSE")
+            Text("WELCOME\nTO\nP.O.S.E")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(.black)
