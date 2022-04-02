@@ -52,7 +52,7 @@ struct TagLineView: View {
 struct SetUpView: View {
     var body: some View {
         HStack{
-            Text("Set Up\nYour Device")
+            Text("Set Up\nMy Device")
                 .foregroundColor(.white)
                 .font(.title)
                 .padding(30)
@@ -69,7 +69,7 @@ struct SetUpView: View {
 struct ObjViwerView: View {
     var body: some View {
         HStack{
-            Text("Your Room")
+            Text("My Room")
                 .foregroundColor(.white)
                 .font(.title)
                 .padding(30)
