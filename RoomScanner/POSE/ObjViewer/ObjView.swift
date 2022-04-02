@@ -16,10 +16,10 @@ struct ObjView: View{
         ZStack(alignment: .bottom){
             VStack(){
                 Model3DView(file: viewModel.ObjFilePath)
-                    .transform(scale: 0.9)
+                    .transform(scale: 1.2)
                     .cameraControls(OrbitControls(
                         camera: $camera,
-                        sensitivity: 0.5
+                        sensitivity: 0.3,
                     ))
             }
         }
