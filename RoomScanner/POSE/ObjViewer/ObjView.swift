@@ -19,9 +19,10 @@ struct ObjView: View{
                     .transform(scale: 1.2)
                     .cameraControls(OrbitControls(
                         camera: $camera,
-                        sensitivity: 0.3,
+                        sensitivity: 0.3
                     ))
             }
+            .ignoresSafeArea()
         }
 
     }
