@@ -11,14 +11,16 @@ struct HomeScreen: View {
     var body: some View {
         NavigationView{
             ZStack {
-                Color(#colorLiteral(red: 0.937254902, green: 0.937254902, blue:0.937254902, alpha: 1))
+                Image("home")
+                    .resizable()
                     .ignoresSafeArea()
-                VStack{
+                
+                VStack {
                     TagLineView()
                     
                     Spacer()
-                    
-                    VStack {
+
+                    VStack{
                         NavigationLink(destination: ScanScreen(), label: {SetUpView()})
                         
                         NavigationLink(destination: ObjView(), label: {ObjViwerView()})
@@ -26,6 +28,7 @@ struct HomeScreen: View {
                     
                     Spacer()
                 }
+                    
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
@@ -40,6 +43,7 @@ struct TagLineView: View {
                 .fontWeight(.bold)
                 .foregroundColor(.black)
                 .multilineTextAlignment(.center)
+                .opacity(0.8)
         }
         .padding()
     }
@@ -56,6 +60,7 @@ struct SetUpView: View {
                 .frame(width: 250, height: 150)
         }
         .background(.black)
+        .opacity(0.85)
         .cornerRadius(20)
         .padding()
     }
@@ -72,6 +77,7 @@ struct ObjViwerView: View {
                 .frame(width: 250, height: 150)
         }
         .background(.black)
+        .opacity(0.85)
         .cornerRadius(20)
         .padding()
     }
