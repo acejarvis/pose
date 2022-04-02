@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AAD05A7727F7E0660082AEC3 /* Model3DView in Frameworks */ = {isa = PBXBuildFile; productRef = AAD05A7627F7E0660082AEC3 /* Model3DView */; };
 		AAD359A027F5349A00BD3B8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAD3599F27F5349A00BD3B8A /* Assets.xcassets */; };
 		AAD359A327F5349A00BD3B8A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAD359A227F5349A00BD3B8A /* Preview Assets.xcassets */; };
 		AAD359AD27F5349A00BD3B8A /* POSETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD359AC27F5349A00BD3B8A /* POSETests.swift */; };
@@ -19,6 +20,8 @@
 		AAD359D027F5366400BD3B8A /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD359CF27F5366400BD3B8A /* ScanViewController.swift */; };
 		AAD359D227F5368500BD3B8A /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD359D127F5368500BD3B8A /* ViewModel.swift */; };
 		AAD359D427F536A300BD3B8A /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD359D327F536A300BD3B8A /* Extension.swift */; };
+		AAD359D727F53F3200BD3B8A /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD359D627F53F3200BD3B8A /* Utils.swift */; };
+		AAD359DF27F54BA800BD3B8A /* ObjView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD359DE27F54BA800BD3B8A /* ObjView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +58,8 @@
 		AAD359D127F5368500BD3B8A /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		AAD359D327F536A300BD3B8A /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		AAD359D527F5374C00BD3B8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AAD359D627F53F3200BD3B8A /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		AAD359DE27F54BA800BD3B8A /* ObjView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAD05A7727F7E0660082AEC3 /* Model3DView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,6 +111,7 @@
 		AAD3599A27F5349500BD3B8A /* POSE */ = {
 			isa = PBXGroup;
 			children = (
+				AAD359DD27F54B2C00BD3B8A /* ObjViewer */,
 				AAD359D527F5374C00BD3B8A /* Info.plist */,
 				AAD359CC27F5361D00BD3B8A /* Scan */,
 				AAD359C527F5352500BD3B8A /* Screen */,
@@ -156,8 +163,17 @@
 				AAD359CF27F5366400BD3B8A /* ScanViewController.swift */,
 				AAD359D127F5368500BD3B8A /* ViewModel.swift */,
 				AAD359D327F536A300BD3B8A /* Extension.swift */,
+				AAD359D627F53F3200BD3B8A /* Utils.swift */,
 			);
 			path = Scan;
+			sourceTree = "<group>";
+		};
+		AAD359DD27F54B2C00BD3B8A /* ObjViewer */ = {
+			isa = PBXGroup;
+			children = (
+				AAD359DE27F54BA800BD3B8A /* ObjView.swift */,
+			);
+			path = ObjViewer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,6 +192,9 @@
 			dependencies = (
 			);
 			name = POSE;
+			packageProductDependencies = (
+				AAD05A7627F7E0660082AEC3 /* Model3DView */,
+			);
 			productName = POSE;
 			productReference = AAD3599827F5349500BD3B8A /* POSE.app */;
 			productType = "com.apple.product-type.application";
@@ -248,6 +267,9 @@
 				Base,
 			);
 			mainGroup = AAD3598F27F5349500BD3B8A;
+			packageReferences = (
+				AAD05A7527F7E0660082AEC3 /* XCRemoteSwiftPackageReference "Model3DView" */,
+			);
 			productRefGroup = AAD3599927F5349500BD3B8A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -293,10 +315,12 @@
 				AAD359CE27F5363200BD3B8A /* ScanScreen.swift in Sources */,
 				AAD359C927F535E100BD3B8A /* ContentView.swift in Sources */,
 				AAD359D427F536A300BD3B8A /* Extension.swift in Sources */,
+				AAD359DF27F54BA800BD3B8A /* ObjView.swift in Sources */,
 				AAD359D027F5366400BD3B8A /* ScanViewController.swift in Sources */,
 				AAD359C727F5357800BD3B8A /* PoseApp.swift in Sources */,
 				AAD359D227F5368500BD3B8A /* ViewModel.swift in Sources */,
 				AAD359CB27F5360600BD3B8A /* HomeScreen.swift in Sources */,
+				AAD359D727F53F3200BD3B8A /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -629,6 +653,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AAD05A7527F7E0660082AEC3 /* XCRemoteSwiftPackageReference "Model3DView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/frzi/Model3DView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AAD05A7627F7E0660082AEC3 /* Model3DView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AAD05A7527F7E0660082AEC3 /* XCRemoteSwiftPackageReference "Model3DView" */;
+			productName = Model3DView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AAD3599027F5349500BD3B8A /* Project object */;
 }

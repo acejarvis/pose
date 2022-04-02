@@ -13,13 +13,16 @@ struct HomeScreen: View {
             ZStack {
                 Color(#colorLiteral(red: 0.937254902, green: 0.937254902, blue:0.937254902, alpha: 1))
                     .ignoresSafeArea()
-                
-                VStack {
+                VStack{
                     TagLineView()
                     
                     Spacer()
                     
-                    NavigationLink(destination: ScanScreen(), label: {SetUpView()})
+                    VStack {
+                        NavigationLink(destination: ScanScreen(), label: {SetUpView()})
+                        
+                        NavigationLink(destination: ObjView(), label: {ObjViwerView()})
+                    }
                     
                     Spacer()
                 }
@@ -50,6 +53,23 @@ struct SetUpView: View {
                 .font(.title)
                 .padding(30)
                 .multilineTextAlignment(.center)
+                .frame(width: 250, height: 150)
+        }
+        .background(.black)
+        .cornerRadius(20)
+        .padding()
+    }
+}
+
+struct ObjViwerView: View {
+    var body: some View {
+        HStack{
+            Text("Your Room")
+                .foregroundColor(.white)
+                .font(.title)
+                .padding(30)
+                .multilineTextAlignment(.center)
+                .frame(width: 250, height: 150)
         }
         .background(.black)
         .cornerRadius(20)
@@ -61,6 +81,7 @@ struct HomeScreen_Previews: PreviewProvider {
     static var previews: some View {
         HomeScreen()
             .previewDevice("iPad Pro (11-inch) (3rd generation)")
+            .previewInterfaceOrientation(.landscapeLeft)
     }
 }
 

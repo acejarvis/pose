@@ -24,8 +24,6 @@ struct ScanScreen: View {
                 Button(
                     action: {
                         viewModel.ClearAnchorObjects = true
-//                            viewModel.cameraError.toggle()
-//                            print("viewModel.cameraError: "+String(viewModel.cameraError))
                     }){
                     Text("Reset")
                         .frame(maxWidth: 60)

@@ -17,6 +17,12 @@ public class MyViewModel: ObservableObject {
     @Published public var ClearAnchorObjects: Bool = false
     @Published public var DonePressed: Bool = false
     @Published public var PopError: ErrorInfo?
+    @Published public var ObjFilePath: URL
+    
+    init(){
+        let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        ObjFilePath = documentsPath.appendingPathComponent("room.obj")
+    }
 }
 
 struct PlacingObjectModel {
