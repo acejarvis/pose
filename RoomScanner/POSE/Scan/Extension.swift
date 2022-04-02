@@ -134,8 +134,8 @@ extension ARPlaneAnchor {
     
     // returns all 4 world coordinates of the given plane
     // (topLeft, topRight, bottomLeft, bottomRight)
-    func worldPoints() -> (SCNVector3, SCNVector3, SCNVector3, SCNVector3) {
-        
+    func worldPoints() -> Array<SCNVector3>{
+        var return_list:[SCNVector3] = []
         // Get world's updated center
         let worldTransform = transform * translateTransform(center.x, 0, center.z)
         
@@ -153,31 +153,30 @@ extension ARPlaneAnchor {
             y: topLeft.columns.3.y,
             z: topLeft.columns.3.z
         )
+        return_list.append(pointTopLeft)
         
         let pointTopRight = SCNVector3(
             x: topRight.columns.3.x,
             y: topRight.columns.3.y,
             z: topRight.columns.3.z
         )
+        return_list.append(pointTopRight)
         
         let pointBottomLeft = SCNVector3(
             x: bottomLeft.columns.3.x,
             y: bottomLeft.columns.3.y,
             z: bottomLeft.columns.3.z
         )
+        return_list.append(pointBottomLeft)
         
         let pointBottomRight = SCNVector3(
             x: bottomRight.columns.3.x,
             y: bottomRight.columns.3.y,
             z: bottomRight.columns.3.z
         )
+        return_list.append(pointBottomRight)
         
-        return (
-            pointTopLeft,
-            pointTopRight,
-            pointBottomLeft,
-            pointBottomRight
-        )
+        return return_list
     }
 }
 
