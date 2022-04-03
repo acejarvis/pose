@@ -22,6 +22,7 @@ struct ObjView: View{
                         sensitivity: 0.3
                     ))
             }
+            .background(.black)
             .ignoresSafeArea()
         }
 
