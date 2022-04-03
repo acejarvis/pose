@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
-let statusBarHeight = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
-let screen = UIScreen.main.bounds
-
 struct Home: View {
 
    @State var show = false
@@ -21,10 +17,7 @@ struct Home: View {
          HomeList()
             .blur(radius: show ? 20 : 0)
             .scaleEffect(showProfile ? 0.95 : 1)
-            .animation(.default)
-
       }
-      .background(Color("background"))
       .edgesIgnoringSafeArea(.all)
    }
 }

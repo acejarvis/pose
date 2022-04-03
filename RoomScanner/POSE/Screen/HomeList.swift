@@ -20,7 +20,7 @@ struct HomeList: View {
                          .font(.largeTitle)
                          .fontWeight(.heavy)
 
-                      Text("Welcome to Pointing Oriented SmartHome Environment\nYour Exclusive Smart Home Experience")
+                      Text("Welcome to the Pointing Oriented SmartHome Environment\nYour Exclusive Smart Home Experience")
                          .foregroundColor(.gray)
                    }
                    Spacer()
@@ -45,14 +45,13 @@ struct HomeList: View {
                  
                  DeviceRow()
              }
-
+             .padding(.top, 40)
           }
-               
+          .background(Color("background15"))
+          .navigationBarTitle(Text(""))
+          .navigationBarHidden(true)
        }
        .navigationViewStyle(StackNavigationViewStyle())
-       .navigationBarTitle(Text("Home"))
-       .navigationBarHidden(true)
-//       .edgesIgnoringSafeArea([.top, .bottom])
        .ignoresSafeArea()
     }
 
@@ -64,7 +63,7 @@ struct Card1: View{
     var body: some View{
         HStack {
             GeometryReader { geometry in
-               CourseView(title: AppFunctions[0].title,
+                CardView(title: AppFunctions[0].title,
                           image: AppFunctions[0].image,
                           color: AppFunctions[0].color,
                           shadowColor: AppFunctions[0].shadowColor)
@@ -83,7 +82,7 @@ struct Card2: View{
     var body: some View{
         HStack {
             GeometryReader { geometry in
-               CourseView(title: AppFunctions[1].title,
+                CardView(title: AppFunctions[1].title,
                           image: AppFunctions[1].image,
                           color: AppFunctions[1].color,
                           shadowColor: AppFunctions[1].shadowColor)
@@ -102,7 +101,7 @@ struct Card3: View{
     var body: some View{
         HStack {
             GeometryReader { geometry in
-               CourseView(title: AppFunctions[2].title,
+                CardView(title: AppFunctions[2].title,
                           image: AppFunctions[2].image,
                           color: AppFunctions[2].color,
                           shadowColor: AppFunctions[2].shadowColor)
@@ -121,7 +120,7 @@ struct Card4: View{
     var body: some View{
         HStack {
             GeometryReader { geometry in
-               CourseView(title: AppFunctions[3].title,
+                CardView(title: AppFunctions[3].title,
                           image: AppFunctions[3].image,
                           color: AppFunctions[3].color,
                           shadowColor: AppFunctions[3].shadowColor)
@@ -144,7 +143,7 @@ struct HomeList_Previews: PreviewProvider {
 }
 #endif
 
-struct CourseView: View {
+struct CardView: View {
 
    var title = "Set Up My Devices"
    var image = "Illustration1"
@@ -172,6 +171,7 @@ struct CourseView: View {
       .background(color)
       .cornerRadius(30)
       .frame(width: 246, height: 360)
+      .opacity(0.9)
 //      .shadow(color: shadowColor, radius: 10, x: 0, y: 20)
    }
 }

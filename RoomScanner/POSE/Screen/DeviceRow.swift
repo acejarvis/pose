@@ -41,7 +41,7 @@ struct DeviceView: View {
                Text(item.title)
                   .font(.headline)
                   .fontWeight(.bold)
-                  .foregroundColor(Color.orange)
+                  .foregroundColor(Color.black)
                   .padding(.top)
             }
             Spacer()
@@ -61,6 +61,7 @@ struct DeviceView: View {
       .background(Color.white)
       .cornerRadius(10)
       .shadow(radius: 10)
+      .opacity(0.9)
    }
 }
 
