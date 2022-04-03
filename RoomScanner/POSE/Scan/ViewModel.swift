@@ -30,6 +30,7 @@ struct PlacingObjectModel {
         case camera
         case light
         case speaker
+        case TV
         
         var id: String {self.rawValue}
     }

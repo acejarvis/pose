@@ -50,8 +50,9 @@ struct HomeList: View {
                
        }
        .navigationViewStyle(StackNavigationViewStyle())
+       .navigationBarTitle(Text("Home"))
        .navigationBarHidden(true)
-       .edgesIgnoringSafeArea([.top, .bottom])
+//       .edgesIgnoringSafeArea([.top, .bottom])
        .ignoresSafeArea()
     }
 

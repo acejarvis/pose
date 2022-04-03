@@ -45,6 +45,9 @@ struct ScanScreen: View {
                             .foregroundColor(.white)
                         Text(PlacingObjectModel.ObjType.speaker.rawValue).tag(PlacingObjectModel.ObjType.speaker)
                             .foregroundColor(.white)
+                        Text(PlacingObjectModel.ObjType.TV.rawValue)
+                            .tag(PlacingObjectModel.ObjType.TV)
+                            .foregroundColor(.white)
                     }
                     .padding()
                 },
