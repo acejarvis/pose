@@ -21,7 +21,7 @@ struct HomeList: View {
                          .fontWeight(.heavy)
 
                       Text("Welcome to the Pointing Oriented SmartHome Environment\nYour Exclusive Smart Home Experience")
-                         .foregroundColor(.gray)
+                           .foregroundColor(Color.secondary)
                    }
                    Spacer()
                 }

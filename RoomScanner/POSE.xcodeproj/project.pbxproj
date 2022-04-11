@@ -12,6 +12,9 @@
 		AA152BE527F9130B00B2D40A /* HomeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA152BE427F9130B00B2D40A /* HomeList.swift */; };
 		AA152BE727F919DE00B2D40A /* DeviceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA152BE627F919DE00B2D40A /* DeviceRow.swift */; };
 		AA152BEA27F9305C00B2D40A /* WhyPOSE.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA152BE927F9305C00B2D40A /* WhyPOSE.swift */; };
+		AA870E222803DFB500C73C06 /* PDFViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA870E212803DFB500C73C06 /* PDFViewer.swift */; };
+		AA870E242803E0EF00C73C06 /* team.pdf in Resources */ = {isa = PBXBuildFile; fileRef = AA870E232803E0EF00C73C06 /* team.pdf */; };
+		AA870E262803E20A00C73C06 /* Project Proposal.pdf in Resources */ = {isa = PBXBuildFile; fileRef = AA870E252803E20A00C73C06 /* Project Proposal.pdf */; };
 		AA8DD2CC27F931CD0030EEDA /* DeveloperTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8DD2CB27F931CD0030EEDA /* DeveloperTeam.swift */; };
 		AAD05A7727F7E0660082AEC3 /* Model3DView in Frameworks */ = {isa = PBXBuildFile; productRef = AAD05A7627F7E0660082AEC3 /* Model3DView */; };
 		AAD359A027F5349A00BD3B8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAD3599F27F5349A00BD3B8A /* Assets.xcassets */; };
@@ -51,6 +54,9 @@
 		AA152BE427F9130B00B2D40A /* HomeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeList.swift; sourceTree = "<group>"; };
 		AA152BE627F919DE00B2D40A /* DeviceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRow.swift; sourceTree = "<group>"; };
 		AA152BE927F9305C00B2D40A /* WhyPOSE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhyPOSE.swift; sourceTree = "<group>"; };
+		AA870E212803DFB500C73C06 /* PDFViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewer.swift; sourceTree = "<group>"; };
+		AA870E232803E0EF00C73C06 /* team.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = team.pdf; sourceTree = "<group>"; };
+		AA870E252803E20A00C73C06 /* Project Proposal.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Project Proposal.pdf"; sourceTree = "<group>"; };
 		AA8DD2CB27F931CD0030EEDA /* DeveloperTeam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperTeam.swift; sourceTree = "<group>"; };
 		AAD3599827F5349500BD3B8A /* POSE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = POSE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAD3599F27F5349A00BD3B8A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -101,6 +107,7 @@
 			children = (
 				AA152BE927F9305C00B2D40A /* WhyPOSE.swift */,
 				AA8DD2CB27F931CD0030EEDA /* DeveloperTeam.swift */,
+				AA870E212803DFB500C73C06 /* PDFViewer.swift */,
 			);
 			path = InfoCard;
 			sourceTree = "<group>";
@@ -128,6 +135,8 @@
 		AAD3599A27F5349500BD3B8A /* POSE */ = {
 			isa = PBXGroup;
 			children = (
+				AA870E232803E0EF00C73C06 /* team.pdf */,
+				AA870E252803E20A00C73C06 /* Project Proposal.pdf */,
 				AA152BE827F9303600B2D40A /* InfoCard */,
 				AAD359DD27F54B2C00BD3B8A /* ObjViewer */,
 				AAD359D527F5374C00BD3B8A /* Info.plist */,
@@ -308,6 +317,8 @@
 			files = (
 				AAD359A327F5349A00BD3B8A /* Preview Assets.xcassets in Resources */,
 				AAD359A027F5349A00BD3B8A /* Assets.xcassets in Resources */,
+				AA870E242803E0EF00C73C06 /* team.pdf in Resources */,
+				AA870E262803E20A00C73C06 /* Project Proposal.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,6 +347,7 @@
 				AAD359D427F536A300BD3B8A /* Extension.swift in Sources */,
 				AAD359DF27F54BA800BD3B8A /* ObjView.swift in Sources */,
 				AA152BEA27F9305C00B2D40A /* WhyPOSE.swift in Sources */,
+				AA870E222803DFB500C73C06 /* PDFViewer.swift in Sources */,
 				AA152BDF27F9121600B2D40A /* Home.swift in Sources */,
 				AA152BE527F9130B00B2D40A /* HomeList.swift in Sources */,
 				AAD359D027F5366400BD3B8A /* ScanViewController.swift in Sources */,
