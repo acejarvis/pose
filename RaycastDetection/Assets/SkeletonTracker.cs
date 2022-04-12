@@ -14,9 +14,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Net;
+using UnityEngine.Networking;
 
 public class SkeletonTracker : MonoBehaviour
 {
+
+
     string message = "";
     string detectMessage = "";
     bool color = false;
@@ -24,18 +27,21 @@ public class SkeletonTracker : MonoBehaviour
     public nuitrack.JointType[] typeJoint;
     GameObject[] CreatedJoint;
     public GameObject PrefabJoint;
-    public Vector3 Foward;
-    GameObject device;
-    Renderer deviceRenderer;
-    Renderer deviceRenderer2;
-    int hitCount = 0;
-    bool deviceStatusON = false;
+    public Vector3 Foward, Foward1;
+    List<GameObject> deviceObjects;
+    List<Renderer> deviceRenderers;
+    int[] hitCount = { 0, 0, 0 };
+    bool[] statuss = { false, false, false };
+    //List<TuyaPlug> deviceList;
+    string[] deviceList = {"Floorlamp", "Sofa Lamp",  "Christmas Tree" };
+
 
 
     void Start()
     {
         // Create Skeleton GameObject
         Application.targetFrameRate = 30;
+
         CreatedJoint = new GameObject[typeJoint.Length];
         for (int q = 0; q < typeJoint.Length; q++)
         {
@@ -43,33 +49,26 @@ public class SkeletonTracker : MonoBehaviour
             CreatedJoint[q].transform.SetParent(transform);
         }
         message = "Skeleton created";
+        // StartCoroutine(ExampleCoroutine());
+        initializeDevices();
 
-        GetDeviceStatus();
-        StartCoroutine(ExampleCoroutine());
-
-
-        GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        plane.transform.position = new Vector3(0, 0.5f, 0);
-
-        GameObject light0 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        light0.transform.position = new Vector3(-1.271f, 0.6f, 2.272f);
-        light0.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-        light0.name = "LightBulb0";
-        deviceRenderer = light0.GetComponent<Renderer>();
 
     }
 
+    /*
     IEnumerator ExampleCoroutine()
     {
         //Print the time of when the function is first called.
         Debug.Log("Started Coroutine at timestamp : " + Time.time);
 
         //yield on a new YieldInstruction that waits for 5 seconds.
-        yield return new WaitForSeconds(5);
-        createObjectsFromJson();
+        yield return new WaitForSeconds(1);
+        initializeDevices();
+        //createObjectsFromJson();
         //After we have waited 5 seconds print the time again.
         Debug.Log("Finished Coroutine at timestamp : " + Time.time);
     }
+    */
 
     void Update()
     {
@@ -86,12 +85,12 @@ public class SkeletonTracker : MonoBehaviour
                 // next step: add filter to smooth the joint data
                 CreatedJoint[q].transform.localPosition = newPosition;
             }
-
             // Raycast Detection
-            Vector3 fromPosition = CreatedJoint[6].transform.localPosition;
+            Vector3 fromPosition = CreatedJoint[7].transform.localPosition;
             Vector3 toPosition = CreatedJoint[8].transform.localPosition;
-            Foward = (toPosition - fromPosition) * 10;
-            Debug.DrawRay(toPosition, Foward, Color.green);
+            Foward = (toPosition - fromPosition) * 80;
+
+
             RaycastHit hit;
             if (Physics.Raycast(toPosition, Foward, out hit))
             {
@@ -99,31 +98,53 @@ public class SkeletonTracker : MonoBehaviour
                 // Targeting specific devices
                 if (hit.collider.gameObject.name == "LightBulb0")
                 {
-                    hitCount++;
-                    detectMessage = "Hit Ball";
-                    deviceRenderer.material.SetColor("_Color", Color.green);
+                    clearHitCount(0);
+                    detectMessage = hitCount[0].ToString();
+
+                    deviceRenderers[0].material.SetColor("_Color", Color.green);
+
                 }
                 else if (hit.collider.gameObject.name == "LightBulb1")
                 {
-                    detectMessage = "Hit Ball";
-                    deviceRenderer2.material.SetColor("_Color", Color.green);
+                    clearHitCount(1);
+
+                    detectMessage = hitCount[1].ToString();
+
+                    deviceRenderers[1].material.SetColor("_Color", Color.green);
                 }
+                else if (hit.collider.gameObject.name == "LightBulb2")
+                {
+                    clearHitCount(2);
+
+                    detectMessage = hitCount[2].ToString();
+                    deviceRenderers[2].material.SetColor("_Color", Color.green);
+                }
+
 
             }
             else
             {
-                hitCount = 0;
                 detectMessage = "Inactive";
-                if (deviceStatusON) deviceRenderer.material.SetColor("_Color", Color.yellow);
-                else deviceRenderer.material.SetColor("_Color", Color.white);
+                for (int i = 0; i < deviceList.Length; i++)
+                {
+                    StartCoroutine(RefreshStatus(i));
+                }
 
             }
             // Added hit count to filter out jitter motion
-            if (hitCount >= 30)
+            if (hitCount[0] >= 30)
             {
-                deviceStatusON = !deviceStatusON;
-                DeviceControl(deviceStatusON);
+                StartCoroutine(DeviceControl(0));
             }
+            if (hitCount[1] >= 30)
+            {
+                StartCoroutine(DeviceControl(1));
+            }
+            if (hitCount[2] >= 30)
+            {
+                StartCoroutine(DeviceControl(2));
+            }
+
             message += " Ray Vector:" + Foward.ToString() + " " + detectMessage;
         }
         else
@@ -169,44 +190,125 @@ public class SkeletonTracker : MonoBehaviour
         }
     }
 
-    // Device Control Command
-    async Task DeviceControl(bool isTurnOn)
+    void clearHitCount(int index)
     {
-        hitCount = 0;
-        if (isTurnOn)
+        hitCount[index]++;
+        for (int i = 0; i < 3; i++)
         {
-            deviceRenderer.material.SetColor("_Color", Color.yellow);
-            await TurnON();
+            if (i != index) hitCount[i] = 0;
+        }
+    }
+
+    // Device Control Command
+
+    void initializeDevices()
+    {
+        //deviceList = new List<TuyaPlug>();
+        deviceObjects = new List<GameObject>();
+        deviceRenderers = new List<Renderer>();
+        //var device0 = new TuyaPlug()
+        //{
+        //    IP = "192.168.31.88",
+        //    LocalKey = "90552857e69fc11c",
+        //    Id = "137107483c71bf2296d3"
+        //};
+        //deviceList.Add(device0);
+
+        //var device1 = new TuyaPlug()
+        //{
+        //    IP = "192.168.31.194",
+        //    LocalKey = "df12a78a691fc089",
+        //    Id = "137107483c71bf225465"
+        //};
+        //deviceList.Add(device1);
+
+        //var device2 = new TuyaPlug()
+        //{
+        //    IP = "192.168.31.68",
+        //    LocalKey = "8196c2b6154ede04",
+        //    Id = "eb6f00bbeca9f3a971jxxx"
+        //};
+        //deviceList.Add(device2);
+
+
+        GameObject light0 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        light0.transform.position = new Vector3(2.2f, 0.5f, -0.5f);
+        light0.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        light0.name = "LightBulb0";
+        deviceObjects.Add(light0);
+        deviceRenderers.Add(light0.GetComponent<Renderer>());
+        GameObject light1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        light1.transform.position = new Vector3(1.5f, 0.5f, -0.5f);
+        light1.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        light1.name = "LightBulb1";
+        deviceObjects.Add(light1);
+        deviceRenderers.Add(light1.GetComponent<Renderer>());
+        GameObject light2 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        light2.transform.position = new Vector3(2.29f, 0.5f, 2.51f);
+        light2.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        light2.name = "LightBulb2";
+        deviceObjects.Add(light2);
+        deviceRenderers.Add(light2.GetComponent<Renderer>());
+
+        foreach (Renderer element in deviceRenderers)
+        {
+            element.material.SetColor("_Color", Color.gray);
+        }
+
+    }
+    // async Task DeviceControl(int index)
+    // {
+    //     //var status = await deviceList[index].GetStatus();
+    //     //await deviceList[index].SetStatus(!status.Powered);
+
+    //     statuss[index] = !statuss[index];
+    //     if (statuss[index])
+    //     {
+    //         deviceRenderers[index].material.SetColor("_Color", Color.yellow);
+    //     }
+    //     else
+    //     {
+    //         deviceRenderers[index].material.SetColor("_Color", Color.white);
+    //     }
+    //     hitCount[index] = 0;
+    // }
+
+    // async Task RefreshStatus(int index)
+    // {
+    //     var status = await deviceList[index].GetStatus();
+
+    //     if (status.Powered)
+    //     {
+    //         deviceRenderers[index].material.SetColor("_Color", Color.yellow);
+    //     }
+    //     else
+    //     {
+    //         deviceRenderers[index].material.SetColor("_Color", Color.white);
+    //     }
+    // }
+
+    IEnumerator RefreshStatus(int index)
+    {
+        UnityWebRequest request = UnityWebRequest.Get("http://192.168.31.13:3000/status?device=" + deviceList[index]);
+        yield return request.SendWebRequest();
+        Debug.Log(request.downloadHandler.text);
+        if(request.downloadHandler.text == "True")
+        {
+            deviceRenderers[index].material.SetColor("_Color", Color.yellow);
         }
         else
         {
-            deviceRenderer.material.SetColor("_Color", Color.white);
-            await TurnON();
+            deviceRenderers[index].material.SetColor("_Color", Color.gray);
         }
     }
 
-    // IoT Control
-    static async Task TurnON()
+    IEnumerator DeviceControl(int index)
     {
-        var device = new TuyaPlug()
-        {
-            IP = "192.168.31.88",
-            LocalKey = "68b3c9e37b8c2cfc",
-            Id = "137107483c71bf2296d3"
-        };
-        var status = await device.GetStatus();
-        await device.SetStatus(!status.Powered); // toggle power
+        UnityWebRequest request = UnityWebRequest.Get("http://192.168.31.13:3000/control?device=" + deviceList[index]);
+        request.SendWebRequest();
+        hitCount[index] = 0;
+        yield return RefreshStatus(index);
+
     }
 
-     async Task GetDeviceStatus()
-    {
-        var device = new TuyaPlug()
-        {
-            IP = "192.168.31.88",
-            LocalKey = "68b3c9e37b8c2cfc",
-            Id = "137107483c71bf2296d3"
-        };
-        var status = await device.GetStatus();
-        deviceStatusON = status.Powered;
-    }
 }
