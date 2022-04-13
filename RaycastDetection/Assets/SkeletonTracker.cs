@@ -36,7 +36,6 @@ public class SkeletonTracker : MonoBehaviour
     string[] deviceList = {"Floorlamp", "Sofa Lamp",  "Christmas Tree" };
 
 
-
     void Start()
     {
         // Create Skeleton GameObject
@@ -52,23 +51,7 @@ public class SkeletonTracker : MonoBehaviour
         // StartCoroutine(ExampleCoroutine());
         initializeDevices();
 
-
     }
-
-    /*
-    IEnumerator ExampleCoroutine()
-    {
-        //Print the time of when the function is first called.
-        Debug.Log("Started Coroutine at timestamp : " + Time.time);
-
-        //yield on a new YieldInstruction that waits for 5 seconds.
-        yield return new WaitForSeconds(1);
-        initializeDevices();
-        //createObjectsFromJson();
-        //After we have waited 5 seconds print the time again.
-        Debug.Log("Finished Coroutine at timestamp : " + Time.time);
-    }
-    */
 
     void Update()
     {
@@ -168,28 +151,6 @@ public class SkeletonTracker : MonoBehaviour
         GUILayout.Label(message);
     }
 
-
-
-    void createObjectsFromJson()
-    {
-
-        using (StreamReader r = new StreamReader("file.json"))
-        {
-            string jsonString = r.ReadToEnd();
-            List<Vector3> objectList = JsonConvert.DeserializeObject<List<Vector3>>(jsonString);
-            int nameOrder = 1;
-
-            foreach (var item in objectList)
-            {
-                GameObject light = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                light.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                light.transform.position = item;
-                light.name = "LightBulb" + nameOrder.ToString();
-                nameOrder++;
-            }
-        }
-    }
-
     void clearHitCount(int index)
     {
         hitCount[index]++;
@@ -206,49 +167,24 @@ public class SkeletonTracker : MonoBehaviour
         //deviceList = new List<TuyaPlug>();
         deviceObjects = new List<GameObject>();
         deviceRenderers = new List<Renderer>();
-        //var device0 = new TuyaPlug()
-        //{
-        //    IP = "192.168.31.88",
-        //    LocalKey = "90552857e69fc11c",
-        //    Id = "137107483c71bf2296d3"
-        //};
-        //deviceList.Add(device0);
 
-        //var device1 = new TuyaPlug()
-        //{
-        //    IP = "192.168.31.194",
-        //    LocalKey = "df12a78a691fc089",
-        //    Id = "137107483c71bf225465"
-        //};
-        //deviceList.Add(device1);
+        using (StreamReader r = new StreamReader("file.json"))
+        {
+            string jsonString = r.ReadToEnd();
+            List<Vector3> objectList = JsonConvert.DeserializeObject<List<Vector3>>(jsonString);
+            int nameOrder = 0;
 
-        //var device2 = new TuyaPlug()
-        //{
-        //    IP = "192.168.31.68",
-        //    LocalKey = "8196c2b6154ede04",
-        //    Id = "eb6f00bbeca9f3a971jxxx"
-        //};
-        //deviceList.Add(device2);
-
-
-        GameObject light0 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        light0.transform.position = new Vector3(2.2f, 0.5f, -0.5f);
-        light0.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-        light0.name = "LightBulb0";
-        deviceObjects.Add(light0);
-        deviceRenderers.Add(light0.GetComponent<Renderer>());
-        GameObject light1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        light1.transform.position = new Vector3(1.5f, 0.5f, -0.5f);
-        light1.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-        light1.name = "LightBulb1";
-        deviceObjects.Add(light1);
-        deviceRenderers.Add(light1.GetComponent<Renderer>());
-        GameObject light2 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        light2.transform.position = new Vector3(2.29f, 0.5f, 2.51f);
-        light2.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-        light2.name = "LightBulb2";
-        deviceObjects.Add(light2);
-        deviceRenderers.Add(light2.GetComponent<Renderer>());
+            foreach (var item in objectList)
+            {
+                GameObject light = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                light.transform.localScale = new Vector3(1.0f,1.0f,1.0f);
+                light.transform.position = item;
+                light.name = "LightBulb" + nameOrder.ToString();
+                deviceObjects.Add(light);
+                deviceRenderers.Add(light.GetComponent<Renderer>());
+                nameOrder++;
+            }
+        }
 
         foreach (Renderer element in deviceRenderers)
         {
@@ -289,7 +225,7 @@ public class SkeletonTracker : MonoBehaviour
 
     IEnumerator RefreshStatus(int index)
     {
-        UnityWebRequest request = UnityWebRequest.Get("http://192.168.31.13:3000/status?device=" + deviceList[index]);
+        UnityWebRequest request = UnityWebRequest.Get("http://localhost:3000/status?device=" + deviceList[index]);
         yield return request.SendWebRequest();
         Debug.Log(request.downloadHandler.text);
         if(request.downloadHandler.text == "True")
@@ -304,7 +240,7 @@ public class SkeletonTracker : MonoBehaviour
 
     IEnumerator DeviceControl(int index)
     {
-        UnityWebRequest request = UnityWebRequest.Get("http://192.168.31.13:3000/control?device=" + deviceList[index]);
+        UnityWebRequest request = UnityWebRequest.Get("http://localhost:3000/control?device=" + deviceList[index]);
         request.SendWebRequest();
         hitCount[index] = 0;
         yield return RefreshStatus(index);
