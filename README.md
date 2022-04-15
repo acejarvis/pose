@@ -7,8 +7,6 @@ A pose estimation based smart home (IoT) control system (Capstone Project)
 </br>
 Currently only support Tuya IoT Devices
 
-## Run the demo
-* Following the [instruction](RaycastDetection/README.md) to run the Unity Project 
 
 
 ## Credits
